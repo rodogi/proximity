@@ -32,7 +32,7 @@ def proximity(net, T, S, bin_size=100, n_iter=1000) -> dict:
     sigma = np.std(distribution)
     z = (d_c - mu) / sigma
 
-    return {'d_c': d_c, 'z_score': z}
+    return {'d_c': d_c, 'z_score': z, 'mu': mu, 'sigma': sigma}
 
 
 def separation(net, A, B):
@@ -95,8 +95,8 @@ def get_binning(net, bin_size=100):
         The upper bound of each bin.
     """
     graph = net.Graph
+    degree2nodes = {}
     if net.module == 'gt':
-        degree2nodes = {}
         try:
             ids = graph.vertex_properties['ids']
         except KeyError:
@@ -104,11 +104,14 @@ def get_binning(net, bin_size=100):
                 "The graph should have a vertex property called 'ids'!")
         deg = graph.degree_property_map('out')
         for v in graph.iter_vertices():
-            degree2nodes.setdefault(deg[v], list)
+            degree2nodes.setdefault(deg[v], list())
             degree2nodes[deg[v]].append(ids[v])
 
     elif net.module == 'nx':
-        degree2nodes = dict(nx.degree(graph))
+        deg = nx.degree(graph)
+        for v, d in deg:
+            degree2nodes.setdefault(d, list())
+            degree2nodes[d].append(v)
     
     assert type(degree2nodes) is dict, "Not a dict!"
     
@@ -137,7 +140,7 @@ def get_binning(net, bin_size=100):
         upper[-1] = d
         nodes[-1].extend(cumnodes)
     
-    return lower, upper, cumnodes
+    return lower, upper, nodes
     
 
 def select_random_nodes(net, nodes, lower, upper, values) -> list:
@@ -163,6 +166,7 @@ def select_random_nodes(net, nodes, lower, upper, values) -> list:
         A list of degree-preserving nodes of size `len(nodes)`
     """
     graph = net.Graph
+    graph_tool = 0
     if net.module == 'gt':
         graph_tool = 1
         try:
@@ -187,7 +191,7 @@ def select_random_nodes(net, nodes, lower, upper, values) -> list:
         n = len(reference_degrees[d])
         for i in range(len(values)):
             if lower[i] < d <= upper[i]:
-                ref = set(values[i]) - set(reference_degrees[d])
+                ref = list(set(values[i]) - set(reference_degrees[d]))
                 break
         sample.extend(np.random.choice(ref, n, replace=False))
     

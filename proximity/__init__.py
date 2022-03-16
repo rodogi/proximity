@@ -1,1 +1,1 @@
-from network import Network
+from proximity.network import Network
