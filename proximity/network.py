@@ -23,7 +23,6 @@ class Network():
             module = graph.__module__
         except:
             raise error
-
         if module == "graph_tool":
             self.module = "gt"
         elif module == "networkx.classes.graph":
@@ -34,3 +33,6 @@ class Network():
             raise error
 
         self.Graph = graph
+
+        def get_proximity(self, T, S, n_bins=100, n_iter=1000):
+            return proximity(self, T, S, n_bins=n_bins, n_iter=n_iter)

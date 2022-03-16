@@ -11,8 +11,28 @@ try:
 except ModuleNotFoundError:
     pass
 
-def proximity():
-    pass
+
+def proximity(net, T, S, bin_size=100, n_iter=1000) -> dict:
+    """Return the proximity between two sets of nodes.
+    
+    The proximity between two sets of nodes as defined in
+    the paper by Guney et al. 2016.
+
+    doi: 10.1038/ncomms10331
+    """
+    lower, upper, values = get_binning(net, bin_size=bin_size)
+    d_c = get_min_shortest_paths(net, T, S)
+    distribution = []
+    for _ in range(n_iter):
+        ran_T  = select_random_nodes(net, T, lower, upper, values)
+        ran_S  = select_random_nodes(net, S, lower, upper, values)
+        ran_d_c = get_min_shortest_paths(net, ran_T, ran_S)
+        distribution.append(ran_d_c)
+    mu = np.mean(distribution)
+    sigma = np.std(distribution)
+    z = (d_c - mu) / sigma
+
+    return {'d_c': d_c, 'z_score': z}
 
 
 def get_binning(net, bin_size=100):
@@ -87,8 +107,8 @@ def get_binning(net, bin_size=100):
         nodes[-1].extend(cumnodes)
     
     return lower, upper, cumnodes
-
     
+
 def select_random_nodes(net, nodes, lower, upper, values) -> list:
     """Return an array with a degree-preserving random selection of nodes.
 
@@ -142,7 +162,7 @@ def select_random_nodes(net, nodes, lower, upper, values) -> list:
     
     return sample
         
-    
+
 def get_min_shortest_paths(net, T, S) -> float:
     """Get the minimal shortest path lengths between two sets of nodes.
     
