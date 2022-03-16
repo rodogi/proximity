@@ -1,4 +1,4 @@
-from proximity import proximity
+from proximity import proximity, separation
 
 
 class Network():
@@ -36,3 +36,8 @@ class Network():
 
         def get_proximity(self, T, S, n_bins=100, n_iter=1000):
             return proximity(self, T, S, n_bins=n_bins, n_iter=n_iter)
+
+        def S_AB(self, A, B):
+            """Get Separation of two sets of nodes."""
+
+            return separation(self, A, B)
