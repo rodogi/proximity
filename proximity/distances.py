@@ -1,3 +1,10 @@
+#! /usr/bin/env python3
+"""
+distances.py contains the functions of network-based distance measures.
+
+creator: rodrigo dorantes gilardi (rodgdor@gmail.com)
+date: 03-16-2022
+"""
 from collections import defaultdict
 
 import numpy as np

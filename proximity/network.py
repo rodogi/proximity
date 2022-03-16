@@ -1,3 +1,10 @@
+#! /usr/bin/env python3
+"""
+network.py contains the library-agnostic class Network.
+
+creator: rodrigo dorantes gilardi (rodgdor@gmail.com)
+date: 03-16-2022
+"""
 from proximity.distances import proximity, separation
 
 

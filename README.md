@@ -1,9 +1,12 @@
-# Proximity
+# Proximity NetMed
 
-The proximity distance $d$ between two sets of nodes $S$ and $T$ is defined as
+Proximity is a package for the calculation of network-based distances like proximity and separation.
 
-$$
-d(S, T) = \frac{1}{||T||}\sum_{t \in T} \min_{s \in S} \delta(s, t),
-$$
+## Proximity
+First introduced in the paper "Network-based in silico drug efficacy screening" by Guney et al. 2016, proximity is a distance measure based on shortest paths between two sets of nodes in the protein-protein interaction network.
 
-where $\delta(s, t)$ is the shortest path length between nodes $s$ and $t$.
+## Separation
+The separation between two set of nodes is a network-based measure introduced in the paper "Uncovering disease-disease relationships through the incomplete interactome" by Menche et al. 2015.
+
+
+Implemented by: Rodrigo Dorantes Gilardi [mailto:rodgdor@gmail.com] for the Barabasi Lab.
