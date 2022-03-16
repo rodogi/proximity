@@ -220,10 +220,12 @@ def get_min_shortest_paths(net, T, S) -> float:
     graph = net.Graph
     # Set the function to calculate shortest paths
     if net.module == 'gt':
+        ids = graph.vertex_properties['ids']
+        labels = {ids[v]: v for v in graph.iter_vertices()}
         # A property map will define the value for paths that
         # does not exist. T 32-bit int has a max value of 2147483647.
         pm = graph.new_vp('int32_t')
-        distance = lambda x, y, z: gt.shortest_distance(x, y, z, dist_map=pm)
+        distance = lambda x, y, z: gt.shortest_distance(x, labels[y], labels[z], dist_map=pm)
     elif net.module == 'nx':
         distance = nx.shortest_path_length
     # For each node, get its min distance with nodes from the other group

@@ -25,6 +25,10 @@ class Network():
             raise error
         if module == "graph_tool":
             self.module = "gt"
+            try:
+                graph.vertex_properties['ids']
+            except KeyError:
+                raise Exception('Graph should have vertex property `ids`!')
         elif module == "networkx.classes.graph":
             self.module = "nx"
         else:
