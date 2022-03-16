@@ -143,20 +143,20 @@ def select_random_nodes(net, nodes, lower, upper, values) -> list:
         for v in graph.iter_vertices():
             node2id[ids[v]] = v
 
-    reference_degrees = defaultdict(int)
+    reference_degrees = defaultdict(set)
     for node in nodes:
         if graph_tool:
             v = graph.vertex(node2id[node])
             d = v.out_degree()
         else:
             d = graph.degree(node)
-        reference_degrees[d] += 1
+        reference_degrees[d].add(node)
     sample = []
     for d in sorted(reference_degrees):
-        n = reference_degrees[d]
-        for i in range(len(nodes)):
+        n = len(reference_degrees[d])
+        for i in range(len(values)):
             if lower[i] < d <= upper[i]:
-                ref = values[i]
+                ref = set(values[i]) - set(reference_degrees[d])
                 break
         sample.extend(np.random.choice(ref, n, replace=False))
     
