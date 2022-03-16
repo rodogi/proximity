@@ -9,4 +9,4 @@ First introduced in the paper "Network-based in silico drug efficacy screening" 
 The separation between two set of nodes is a network-based measure introduced in the paper "Uncovering disease-disease relationships through the incomplete interactome" by Menche et al. 2015.
 
 
-Implemented by: Rodrigo Dorantes Gilardi [mailto:rodgdor@gmail.com] for the Barabasi Lab.
+Implemented by: Rodrigo Dorantes Gilardi [rodgdor@gmail.com](mailto:rodgdor@gmail.com) for the Barabasi Lab.
