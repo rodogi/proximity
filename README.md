@@ -31,24 +31,31 @@ import pandas as pd
 import networkx as nx
 import graph_tool.all as gt
 
+# Load the PPI
 df = pd.read_csv('../test_proximity/data/ppi.csv').dropna()
 df = df[['Symbol_A', 'Symbol_B']]
 
-G = nx.from_pandas_edgelist(df, source='Symbol_A', target='Symbol_B')
-
+# Select some Targets and Disease genes
 np.random.seed(42)
 T = np.random.choice(df['Symbol_A'].values, 10, replace=False)
 S = np.random.choice(df['Symbol_B'].values, 10, replace=False)
 
+# Create the networks
+
+# Graph-tool
 g = gt.Graph(directed=False)
 ids = g.add_edge_list(df.values, hashed=True)
 g.vertex_properties['ids'] = ids
 
-net = proximity.Network(g)
-alt = proximity.Network(G)
+# Networkx
+G = nx.from_pandas_edgelist(df, source='Symbol_A', target='Symbol_B')
 
-print(net.get_proximity(T, S, n_iter=1000))
-print(alt.get_proximity(T, S, n_iter=1000))
+# Compute proximity
+net_nx = proximity.Network(g)
+net_gt = proximity.Network(G)
+
+print(net_nx.get_proximity(T, S, n_iter=1000))
+print(net_gt.get_proximity(T, S, n_iter=1000))
 ```
 
 This will output something like this (result may vary):
