@@ -47,7 +47,7 @@ def separation(net, A, B):
 
     Parameters
     ----------
-    net: prximity.Network
+    net: proximity.Network
     A: container
         A subset of nodes in net.Graph
     B: container
